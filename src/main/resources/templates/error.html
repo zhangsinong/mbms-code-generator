@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!--
+  ~ /* *#                                                                      #
+  ~  *#                      Copyright (c) 2018 by                           #
+  ~  *#          Shanghai Stock Exchange (SSE), Shanghai, China              #
+  ~  *#                       All rights reserved.                           #
+  ~  *#                                                                      #
+  ~  **/
+  -->
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <title>ijep开发平台-代码生成器</title>
+    <link rel="stylesheet" type="text/css" href="/static/bootstrap/css/bootstrap.css"/>
+    <script src="/static/jquery/jquery-1.11.1.js"></script>
+    <script src="/static/jquery/jquery.json-2.4.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.js"></script>
+    <style>
+        .body {
+            margin: 0;
+            padding-top: 10px;
+            font-size: 12px;
+            font-family: "Microsoft YaHei UI";
+        }
+
+        .spanner {
+            height: 100px;
+            width: 200px;
+            margin: 10px 20px 20px 10px;
+            padding: 10px 10px 10px 10px;
+        }
+    </style>
+</head>
+<body class="body">
+<a th:href="${#httpServletRequest.getScheme() + '://' + #httpServletRequest.getServerName() + ':' + #httpServletRequest.getServerPort() + #httpServletRequest.getContextPath() + '/'}"
+   id="contextPath"></a>
+<div class="nav-header">
+    <h1>ijep开发平台-代码生成器</h1>
+</div>
+<div class="container">
+    <div class="row">
+        <h3 class="alert-danger" th:text="${msg}"></h3>
+        <a class="btn btn-link" onclick="showSettings()">设置数据库连接</a>
+        <a class="btn btn-link" onclick="home()">返回首页</a>
+    </div>
+
+    <script>
+        function showSettings() {
+            var path = $("#contextPath").attr("href");
+            window.open(path + "connpath", "_self");
+        }
+
+        function home() {
+            var home = $("#contextPath").attr("href");
+            window.open(home, "_self");
+        }
+    </script>
+</div>
+</body>
+</html>

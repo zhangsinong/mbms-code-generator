@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset='UTF-8'/>
+    <meta name='viewport' content='width=device-width initial-scale=1'/>
+    <title>ijep开发平台-代码生成器</title>
+    <link rel="stylesheet" type="text/css" href="/static/bootstrap/css/bootstrap.css"/>
+    <script src="/static/jquery/jquery-1.11.1.js"></script>
+    <script src="/static/jquery/jquery.json-2.4.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.js"></script>
+    <style>
+        body {
+            width: 80%;
+            margin-left: 50px;
+            #margin-top: 50px;
+            #padding-top: 50px;
+            padding-left: 50px;
+        }
+
+        img {
+            max-width: 90%;
+        }
+    </style>
+</head>
+<body>
+<a th:href="${#httpServletRequest.getScheme() + '://' + #httpServletRequest.getServerName() + ':' + #httpServletRequest.getServerPort() + #httpServletRequest.getContextPath() + '/'}"
+   id="contextPath"></a>
+<div class="nav-header">
+    <h1>ijep开发平台-代码生成器</h1>
+</div>
+<div>
+    <h2>简介</h2>
+    <p>ijcg代码生成器是专门为<strong>ijep开发平台</strong>开发的，同时也支持基于SSM（Spring、Spring
+        MVC、MyBatis）框架的基础代码生成。代码生成器从平时开发的代码中筛选出经过良好设计的代码进行模板化，生成了基础的CRUD操作的代码。</p>
+    <p><strong>SSM代码生成器的特点</strong>：</p>
+    <ol start=''>
+        <li>通用的分层架构，视图层（Controller）、服务层（Service）、数据访问层（Dao、Mapper）。</li>
+        <li>生成的代码支持swagger的注解。</li>
+        <li>支持动态参数校验，生成了符合JSR-33规范的注解。</li>
+        <li>代码生成器支持mysql数据库、oracle数据库（计划中）。</li>
+        <li>数据库链接动态配置。</li>
+        <li>基于BS架构一处部署，人人可用。</li>
+
+    </ol>
+    <h2>使用</h2>
+    <ol start=''>
+        <li>SSM代码生成器使用十分简单，首先请配置数据源。在首页点击配置数据库连接。</li>
+
+    </ol>
+    <p><img src='/static/image/index.png' alt='' referrerPolicy='no-referrer'/></p>
+    <ol start='2'>
+        <li>配置数据库连接，现在只支持mysql。数据库连接就是JDBC连接。e.g. jdbc:mysql://10.112.8.235:3306/cms</li>
+    </ol>
+    <p><img src='/static/image/1539139764471.png' alt='数据库连接' referrerPolicy='no-referrer'/></p>
+    <ol start='3'>
+        <li>测试数据库连接，测试通过后点击确定按钮。这样我们就配置好了数据源。</li>
+
+    </ol>
+    <p><img src='/static/image/1539139904699.png' alt='操作成功' referrerPolicy='no-referrer'/></p>
+    <ol start='4'>
+        <li><p>返回首页，点击生成代码，进入代码生成页面。默认的页面上会罗列出当前链接的数据库中的所有表给你参考。在右边部分的配置属性表单中，才是真正的可以使用的代码生成属性。</p>
+            <p><img src='/static/image/1539150311437.png' alt='1539150311437' referrerPolicy='no-referrer'/></p>
+            <h4>代码生成器配置属性解释</h4>
+            <figure>
+                <table>
+                    <thead>
+                    <tr>
+                        <th style='text-align:center;'>配置项</th>
+                        <th style='text-align:left;'>解释</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td style='text-align:center;'>模板</td>
+                        <td style='text-align:left;'>分为通用、流程两种。</td>
+                    </tr>
+                    <tr>
+                        <td style='text-align:center;'>表名称</td>
+                        <td style='text-align:left;'>选择哪张表来生成代码，支持自动补全</td>
+                    </tr>
+                    <tr>
+                        <td style='text-align:center;'>模板包名</td>
+                        <td style='text-align:left;'>生成的java包路径（前缀）例如：sse.department.create</td>
+                    </tr>
+                    <tr>
+                        <td style='text-align:center;'>Model名称</td>
+                        <td style='text-align:left;'>这个是必填的，就是表对应的实体名称。</td>
+                    </tr>
+                    <tr>
+                        <td style='text-align:center;'>实体包名</td>
+                        <td style='text-align:left;'>model所在的包路径，有时候我们的model和逻辑会分开。</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </figure>
+        </li>
+        <li><p>填写合适的属性配置，然后点击生成代码。浏览器会自动下载生成好的代码。</p>
+            <p><img src='/static/image/1539140548987.png' alt='生成代码' referrerPolicy='no-referrer'/></p>
+            <p></p>
+        </li>
+
+    </ol>
+</div>
+<div>
+    <a class="btn btn-primary" onclick="home()">返回</a>
+</div>
+<script>
+    function home() {
+        var home = $("#contextPath").attr("href");
+        window.open(home, "_self");
+    }
+</script>
+</body>
+</html>

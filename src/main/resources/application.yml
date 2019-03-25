@@ -1,0 +1,19 @@
+
+server:
+  port: 20031
+
+spring:
+  application:
+    name: nbms-code-generator
+
+  thymeleaf:
+    cache: false
+    enabled: true
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+
+logging:
+  level:
+    root: info
+  path: D:\generator.log

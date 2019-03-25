@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <title>ijep开发平台-代码生成器</title>
+    <link rel="stylesheet" type="text/css" href="/static/bootstrap/css/bootstrap.css"/>
+    <script src="/static/jquery/jquery-1.11.1.js"></script>
+    <script src="/static/jquery/jquery.json-2.4.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.js"></script>
+    <style>
+        .body {
+            margin: 0;
+            padding-top: 10px;
+            font-size: 12px;
+            font-family: "Microsoft YaHei UI";
+        }
+
+        .spanner {
+            height: 100px;
+            width: 200px;
+            margin: 10px 20px 20px 10px;
+            padding: 10px 10px 10px 10px;
+        }
+    </style>
+</head>
+<body class="body">
+<a th:href="${#httpServletRequest.getScheme() + '://' + #httpServletRequest.getServerName() + ':' + #httpServletRequest.getServerPort() + #httpServletRequest.getContextPath() + '/'}" id="contextPath"></a>
+<div class="nav-header">
+    <h1>ijep开发平台-代码生成器</h1>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            <fieldset>
+                <legend>设置数据库链接</legend>
+            <form class="form-horizontal" id="form" onsubmit="return false;">
+                <div class="control-group">
+                    <label class="control-label" for="driver"> 数据库</label>
+                    <div class="controls">
+                        <select name="driver" id="driver">
+                            <option value="MYSQL" selected="selected">MYSQL</option>
+                            <option value="ORACLE">ORACLE</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="url"> URL</label>
+                    <div class="controls">
+                        <input type="text" id="url" name="url" placeholder="数据库链接"/>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="userName"> 用户名</label>
+                    <div class="controls">
+                        <input type="text" id="userName" name="userName" placeholder="用户名"/>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="password"> 密码</label>
+                    <div class="controls">
+                        <input type="password" id="password" name="password" placeholder="密码"/>
+                        <input type="hidden" id="validate" value="false" />
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <button class="btn btn-warning" onclick="test();">测试</button>
+                    <button class="btn btn-info" onclick="setConnector();">确定</button>
+                    <button class="btn" onclick="home()">返回</button>
+                    <div class="alert" id="alertMsg" style="display: none">
+                    </div>
+                </div>
+            </form>
+            </fieldset>
+        </div>
+    </div>
+
+    <script>
+        var base =  $("#contextPath").attr("href");
+
+        $(document).ready(function () {
+            $.get(base, function(data) {
+                console.log(data)
+                if (data.success) {
+                   $("#url").val(data.url);
+                   $("#userName").val(data.userName);
+                   $("#password").val(data.password);
+                } else {
+                    $("#alertMsg").html(data.message).addClass("alert-error").show();
+                }
+            });
+        })
+
+        function setConnector() {
+            var path = base + "conn";
+            var data = $("#form").serializeArray();
+
+            $.post(path, data, function(data) {
+                if (data.success) {
+                    $("#alertMsg").html("操作成功！").removeClass("alert-error")
+                        .addClass("alert-success")
+                        .show(100).delay(1000).hide(100);
+                } else {
+                    $("#alertMsg").html("操作成功！").removeClass("alert-success")
+                        .addClass("alert-error")
+                        .show(100).delay(1000).hide(100);
+                }
+            });
+        }
+
+        function home(){
+            var home = $("#contextPath").attr("href");
+            window.open(home,"_self");
+        }
+
+        function test(){
+            var path = base + "test";
+            var data = $("#form").serializeArray();
+
+            $.post(path, data, function(data) {
+                if (data.success) {
+                    $("#alertMsg").html("验证通过！").removeClass("alert-error").addClass("alert-success").show(100).delay(1000).hide(100);
+                } else {
+                    $("#alertMsg").html(data.message).removeClass("alert-success").addClass("alert-error").show(100).delay(1000).hide(100);
+                }
+            });
+        }
+    </script>
+</div>
+</body>
+</html>

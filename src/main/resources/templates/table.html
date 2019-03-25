@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<!--
+  ~ /* *#                                                                      #
+  ~  *#                      Copyright (c) 2018 by                           #
+  ~  *#          Shanghai Stock Exchange (SSE), Shanghai, China              #
+  ~  *#                       All rights reserved.                           #
+  ~  *#                                                                      #
+  ~  **/
+  -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <title>ijep开发平台-代码生成器</title>
+    <link rel="stylesheet" type="text/css" href="/static/bootstrap/css/bootstrap.css"/>
+    <script src="/static/jquery/jquery-1.11.1.js"></script>
+    <script src="/static/jquery/jquery.json-2.4.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.js"></script>
+    <style>
+        .body {
+            margin: 0;
+            padding-top: 10px;
+            font-size: 12px;
+            font-family: "Microsoft YaHei UI";
+        }
+
+        .spanner {
+            height: 100px;
+            width: 200px;
+            margin: 10px 20px 20px 10px;
+            padding: 10px 10px 10px 10px;
+        }
+    </style>
+</head>
+<body class="body">
+<a th:href="${#httpServletRequest.getScheme() + '://' + #httpServletRequest.getServerName() + ':' + #httpServletRequest.getServerPort() + #httpServletRequest.getContextPath() + '/'}"
+   id="contextPath"></a>
+<div class="nav-header">
+    <h1>ijep开发平台-代码生成器</h1>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="span6">
+            <fieldset>
+                <legend>数据库表</legend>
+                <div id="table" class="table" style="height:400px;">
+                    <table class="table table-bordered">
+                        <thead>
+                        <th>序号</th>
+                        <th>表名称</th>
+                        <th>表备注</th>
+                        </thead>
+                        <tbody>
+                        <tr th:each="table,state:${tableList}" onclick="getTable(this)">
+                            <td th:text="${state.count}"></td>
+                            <td th:text="${table.tableName}"></td>
+                            <td th:text="${table.tableComment}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
+        </div>
+        <div class="span6">
+            <fieldset>
+                <legend>配置属性</legend>
+                <form class="form-horizontal" id="configForm">
+                    <div class="control-group">
+                        <label class="control-label" for="template"> 模板</label>
+                        <div class="controls">
+                            <select name="template" id="template">
+                                <option value="BASE" selected="selected">通用</option>
+                                <!--<option value="FLOW">流程</option>-->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="tableName"> 表名称</label>
+                        <div class="controls">
+                            <input type="text" name="tableName" data-provide="typeahead" id="tableName"
+                                   required="required"/>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="bizCodePackage"> 模块包名</label>
+                        <div class="controls">
+                            <input type="text" name="bizCodePackage" id="bizCodePackage" required="required"/>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="modelName"> 实体(Model)名称</label>
+                        <div class="controls">
+                            <input type="text" name="modelName" id="modelName" required="required"/>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="modelPackage"> 实体(Model)包名</label>
+                        <div class="controls">
+                            <input type="text" name="modelPackage" id="modelPackage"/>
+                        </div>
+                    </div>
+
+                    <!--<div class="control-group">
+                        <label class="control-label" for="uploadfile"> 上传文件</label>
+                        <div class="controls">
+                            <input class="radio" type="radio" name="uploadfile" value="是" checked="checked" id="uploadfile">是</input>
+                            <input class="radio" type="radio" name="uploadfile" value="否">否</input>
+                        </div>
+                    </div>-->
+
+                    <div class="control-group">
+                        <button class="btn btn-info" onclick="generator();">生成代码</button>
+                        <a class="btn" onclick="home()">返回</a>
+                        <div class="alert" id="alertMsg" style="display: none">
+                        </div>
+                    </div>
+                </form>
+            </fieldset>
+        </div>
+    </div>
+</div>
+
+<script>
+    var base = $("#contextPath").attr("href");
+
+    $(document).ready(function () {
+        var path = base + "/table/list";
+        var param = {};
+        $.get(path, param, function (data) {
+            if (data.success) {
+                var tableName = new Array();
+                $.each(data.data, function (idx, table) {
+                    tableName.push(table.tableName);
+                });
+
+                $("#tableName").typeahead({
+                    source: tableName,
+                    items: 10,
+                    minLength: 1
+                });
+            }
+        });
+    })
+
+    function getTable(e) {
+        $("#tableName").val($(e).children().eq(1).html());
+        $("html,body").animate({scrollTop:0},1000);
+        $("#bizCodePackage").focus();
+    }
+
+    function generator() {
+        var path = base + "generator";
+        $("#configForm").attr("action",path);
+        $("#configForm").attr("method","post");
+        $("#configForm").submit();
+
+        // var path = base + "generator";
+        // var data = $("#form").serializeArray();
+
+        // $.post(path, data, function (data) {
+        //     if (data.success) {
+        //         $("#alertMsg").html("操作成功！").removeClass()
+        //             .addClass("alert-success")
+        //             .show(100).delay(3000).hide(100);
+        //     } else {
+        //         $("#alertMsg").html("操作成功！").removeClass()
+        //             .addClass("alert-error")
+        //             .show(100).delay(3000).hide(100);
+        //     }
+        // });
+
+    }
+
+    function home() {
+        var home = $("#contextPath").attr("href");
+        window.open(home, "_self");
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <title>ijep开发平台-代码生成器</title>
+    <link rel="stylesheet" type="text/css" href="/static/bootstrap/css/bootstrap.css"/>
+    <script src="/static/jquery/jquery-1.11.1.js"></script>
+    <script src="/static/jquery/jquery.json-2.4.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.js"></script>
+    <style>
+        .body {
+            margin: 0;
+            padding-top: 10px;
+            font-size: 12px;
+            font-family: "Microsoft YaHei UI";
+        }
+        .spanner {
+            height: 100px;
+            width: 200px;
+            margin: 10px 20px 20px 10px;
+            padding: 10px 10px 10px 10px;
+        }
+    </style>
+</head>
+<body class="body">
+<a th:href="${#httpServletRequest.getScheme() + '://' + #httpServletRequest.getServerName() + ':' + #httpServletRequest.getServerPort() + #httpServletRequest.getContextPath() + '/'}" id="contextPath"></a>
+<div class="nav-header">
+    <h1>ijep开发平台-代码生成器</h1>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="span3">
+            <div class="spanner" style="background: #faa732" onclick="showSettings()">
+                <span style="font-size: 20px"> 配置数据库连接</span>
+            </div>
+        </div>
+        <div class="span3">
+            <div class="spanner" style="background: #62c462" onclick="showGenerate()">
+                <span style="font-size: 20px">生成代码</span>
+            </div>
+        </div>
+        <div class="span3">
+            <div class="spanner" style="background: #4bb1cf" onclick="showHelp()">
+                <span style="font-size: 20px">  帮助</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showSettings(){
+            var path = $("#contextPath").attr("href");
+            window.open(path + "connpath","_self");
+        }
+
+        function showGenerate(){
+            var path = $("#contextPath").attr("href");
+            window.open(path + "tablePath","_self");
+        }
+
+        function showHelp(){
+            var path = $("#contextPath").attr("href");
+            window.open(path + "help","_self");
+        }
+    </script>
+</div>
+</body>
+</html>
